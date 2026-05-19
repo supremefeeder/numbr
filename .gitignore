@@ -1,13 +1,13 @@
-# ── Privat (rot) — økonomi, pitch, osv. ──
-lokalt/
+# ── Private (root) — business files, not the website ──
+private/
 .cursor/
 
-# ── Nettsted: alt unntatt nettsted/github/ ──
-nettsted/lokalt/
-nettsted/github/waitlist.config.js
-nettsted/github/waitlist.config.local.js
+# ── Site: everything except site/github/ ──
+site/workspace/
+site/github/waitlist.config.js
+site/github/waitlist.config.local.js
 
-# ── Hemmeligheter ──
+# ── Secrets ──
 .env
 .env.*
 *.pem
