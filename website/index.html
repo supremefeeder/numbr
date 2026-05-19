@@ -510,6 +510,16 @@ nav {
   border-radius: 100px;
 }
 .wl-btn:hover { background: var(--gold-lt); }
+.wl-btn:disabled { opacity: 0.55; cursor: wait; }
+
+.wl-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 
 .wl-note {
   font-size: var(--fs-micro);
@@ -699,8 +709,12 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   <div class="wl-inner reveal">
     <h2>Vi er ikke klare<br>ennå. Men du<br>kan <em>være det.</em></h2>
     <form class="wl-form" id="wlForm" novalidate>
+      <label class="wl-honeypot" aria-hidden="true">
+        Ikke fyll ut
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+      </label>
       <input class="wl-input" type="email" name="email" placeholder="din@epost.no" id="wlEmail" autocomplete="email" required>
-      <button type="submit" class="wl-btn">Meld meg på</button>
+      <button type="submit" class="wl-btn" id="wlBtn">Meld meg på</button>
     </form>
     <p class="wl-note" id="wlMsg" role="status" aria-live="polite">Ingen spam. Avmeld når som helst.</p>
   </div>
@@ -716,6 +730,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   <p>© 2026 Numbr AS · Oslo</p>
 </footer>
 
+<script src="waitlist.config.js"></script>
 <script>
 (function () {
   const fab = document.getElementById('fab');
@@ -789,22 +804,74 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const waitlistCfg = window.NUMBR_WAITLIST || {};
+  const wlForm = document.getElementById('wlForm');
+  const wlInput = document.getElementById('wlEmail');
+  const wlBtn = document.getElementById('wlBtn');
+  const wlMsg = document.getElementById('wlMsg');
+  const wlBtnLabel = wlBtn.textContent;
 
-  function signup() {
-    const input = document.getElementById('wlEmail');
-    const msg = document.getElementById('wlMsg');
-    const value = input.value.trim();
-    if (emailPattern.test(value)) {
-      msg.textContent = '✓ Du er på listen. Vi gir deg beskjed ved lansering.';
-      msg.style.color = 'rgba(196,168,100,0.8)';
-      input.value = '';
-    } else {
-      msg.textContent = 'Skriv inn en gyldig e-postadresse.';
-      msg.style.color = '#ff6b6b';
+  function setWlMessage(text, tone) {
+    wlMsg.textContent = text;
+    wlMsg.style.color = tone === 'ok'
+      ? 'rgba(196,168,100,0.8)'
+      : tone === 'err'
+        ? '#ff6b6b'
+        : 'rgba(225,215,235,0.18)';
+  }
+
+  async function signup() {
+    const value = wlInput.value.trim();
+    if (!emailPattern.test(value)) {
+      setWlMessage('Skriv inn en gyldig e-postadresse.', 'err');
+      return;
+    }
+
+    if (!waitlistCfg.enabled || !waitlistCfg.endpoint) {
+      setWlMessage('Ventelisten er ikke aktivert ennå. Prøv igjen om litt.', 'err');
+      return;
+    }
+
+    wlBtn.disabled = true;
+    wlBtn.textContent = 'Sender …';
+    setWlMessage('Sender …', 'neutral');
+
+    const payload = new FormData(wlForm);
+    payload.set('email', value);
+    payload.set('_subject', 'Numbr venteliste');
+
+    const accessKey = waitlistCfg.accessKey
+      || (waitlistCfg.endpoint && waitlistCfg.endpoint.split('/f/')[1]);
+    if (accessKey) payload.set('access_key', accessKey);
+
+    try {
+      const res = await fetch(waitlistCfg.endpoint, {
+        method: 'POST',
+        body: payload,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        setWlMessage('✓ Du er på listen. Vi gir deg beskjed ved lansering.', 'ok');
+        wlForm.reset();
+        return;
+      }
+
+      if (res.status === 429) {
+        setWlMessage('For mange forsøk. Prøv igjen om en stund.', 'err');
+        return;
+      }
+
+      setWlMessage('Noe gikk galt. Prøv igjen om litt.', 'err');
+    } catch {
+      setWlMessage('Kunne ikke koble til. Sjekk nettet og prøv igjen.', 'err');
+    } finally {
+      wlBtn.disabled = false;
+      wlBtn.textContent = wlBtnLabel;
     }
   }
 
-  document.getElementById('wlForm').addEventListener('submit', e => {
+  wlForm.addEventListener('submit', e => {
     e.preventDefault();
     signup();
   });

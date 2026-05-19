@@ -26,7 +26,11 @@ Ved push til `main` deployes `website/` automatisk via [`.github/workflows/deplo
 
 1. **Settings → Pages → Custom domain:** `numbr.no`
 2. Legg til DNS hos domeneleverandør (GitHub viser nøyaktige poster).
-3. Valgfritt: opprett `website/CNAME` med domenet for å holde det i repo.
+3. Valgfritt: opprett `website/CNAME` med domenet for å holde det i repo (se `website/CNAME.example`).
+
+### Venteliste (e-post)
+
+Skjemaet lagrer ikke e-post før du kobler til en form-tjeneste (anbefalt EU: [nForms](https://nforms.eu)). Steg-for-steg: [`website/WAITLIST.md`](website/WAITLIST.md).
 
 ### Push til GitHub
 
