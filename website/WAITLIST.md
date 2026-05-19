@@ -17,16 +17,14 @@ Landingssiden er statisk (GitHub Pages). E-poster lagres via en ekstern form-tje
 
 1. Registrer deg på [nforms.eu](https://nforms.eu/login) → opprett skjema.
 2. Kopier **access key** / endpoint: `https://api.nforms.eu/f/DIN_NØKKEL`
-3. I `website/waitlist.config.js`:
+3. Legg nøkkelen som **GitHub Secret** (aldri i git):
+   - Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+   - Navn: `NFORMS_ACCESS_KEY`
+   - Verdi: din access key (kun nøkkelen, f.eks. `nf_…`)
 
-```javascript
-window.NUMBR_WAITLIST = {
-  enabled: true,
-  endpoint: 'https://api.nforms.eu/f/DIN_NØKKEL',
-};
-```
+4. Push til `main` — deploy-workflow genererer `waitlist.config.js` automatisk.
 
-4. Commit, push, test på live-URL.
+**Lokal testing:** kopier `waitlist.config.example.js` til `waitlist.config.js` (filen er i `.gitignore`).
 5. Innsendinger: **nForms dashboard** (e-postvarsel kan slås på der).
 
 **Egendefinert domene (numbr.no):** Under nForms kan du sette *trusted domains* på betalte planer; på gratis fungerer skjemaet uansett fra ditt domene via `fetch`.

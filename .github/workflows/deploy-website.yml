@@ -27,6 +27,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create waitlist config from secret
+        env:
+          NFORMS_ACCESS_KEY: ${{ secrets.NFORMS_ACCESS_KEY }}
+        run: |
+          if [ -z "$NFORMS_ACCESS_KEY" ]; then
+            echo "::error::NFORMS_ACCESS_KEY secret is not set. Add it under repo Settings → Secrets → Actions."
+            exit 1
+          fi
+          cat > website/waitlist.config.js <<EOF
+          window.NUMBR_WAITLIST = {
+            enabled: true,
+            endpoint: 'https://api.nforms.eu/f/${NFORMS_ACCESS_KEY}',
+          };
+          EOF
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

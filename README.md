@@ -30,7 +30,9 @@ Ved push til `main` deployes `website/` automatisk via [`.github/workflows/deplo
 
 ### Venteliste (e-post)
 
-Skjemaet lagrer ikke e-post før du kobler til en form-tjeneste (anbefalt EU: [nForms](https://nforms.eu)). Steg-for-steg: [`website/WAITLIST.md`](website/WAITLIST.md).
+Venteliste via [nForms](https://nforms.eu) (EU). Nøkkel lagres som GitHub Secret `NFORMS_ACCESS_KEY` — aldri i repo. Se [`website/WAITLIST.md`](website/WAITLIST.md).
+
+**Repo:** privat. **GitHub Pages** på privat repo krever [GitHub Pro](https://github.com/pricing); ellers må repo være public for gratis Pages.
 
 ### Push til GitHub
 
