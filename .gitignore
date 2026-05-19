@@ -1,7 +1,26 @@
+# ── Lokalt arbeidsområde (Dropbox) — aldri i git ──
+/design/
+/archive/
+/assets/
+*.pages
+*.sketch
+*.fig
+
+# ── Nettside: kun produksjon committes i website/ ──
+website/waitlist.config.js
+website/waitlist.config.local.js
+website/mockup/
+website/reference/
+
+# ── Hemmeligheter ──
+.env
+.env.*
+*.pem
+*.key
+
+# ── OS / editor ──
 .DS_Store
 Thumbs.db
 *.log
-.env
-.env.*
-website/waitlist.config.js
-website/waitlist.config.local.js
+.idea/
+.vscode/

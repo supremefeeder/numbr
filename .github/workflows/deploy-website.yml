@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'website/**'
+      - 'website/index.html'
+      - 'website/CNAME'
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:
 
@@ -32,20 +33,31 @@ jobs:
           NFORMS_ACCESS_KEY: ${{ secrets.NFORMS_ACCESS_KEY }}
         run: |
           if [ -z "$NFORMS_ACCESS_KEY" ]; then
-            echo "::error::NFORMS_ACCESS_KEY secret is not set. Add it under repo Settings → Secrets → Actions."
+            echo "::error::NFORMS_ACCESS_KEY secret is not set."
             exit 1
           fi
-          cat > website/waitlist.config.js <<EOF
+          cat > waitlist.config.js <<EOF
           window.NUMBR_WAITLIST = {
             enabled: true,
             endpoint: 'https://api.nforms.eu/f/${NFORMS_ACCESS_KEY}',
           };
           EOF
 
+      - name: Prepare public site bundle
+        run: |
+          mkdir -p _site
+          cp website/index.html _site/
+          cp waitlist.config.js _site/
+          if [ -f website/CNAME ]; then
+            cp website/CNAME _site/
+          fi
+          echo "Deploying only:"
+          ls -la _site/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
