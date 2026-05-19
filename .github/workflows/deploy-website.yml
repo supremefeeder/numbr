@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'website/index.html'
-      - 'website/CNAME'
+      - 'nettsted/index.html'
+      - 'nettsted/CNAME'
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:
 
@@ -46,10 +46,10 @@ jobs:
       - name: Prepare public site bundle
         run: |
           mkdir -p _site
-          cp website/index.html _site/
+          cp nettsted/index.html _site/
           cp waitlist.config.js _site/
-          if [ -f website/CNAME ]; then
-            cp website/CNAME _site/
+          if [ -f nettsted/CNAME ]; then
+            cp nettsted/CNAME _site/
           fi
           echo "Deploying only:"
           ls -la _site/

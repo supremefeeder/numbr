@@ -1,16 +1,11 @@
-# ── Lokalt arbeidsområde (Dropbox) — aldri i git ──
-/design/
-/archive/
-/assets/
-*.pages
-*.sketch
-*.fig
+# ── Alt privat — aldri på GitHub ──
+lokalt/
+.cursor/
 
-# ── Nettside: kun produksjon committes i website/ ──
-website/waitlist.config.js
-website/waitlist.config.local.js
-website/mockup/
-website/reference/
+# ── Nettside: kladder og lokale secrets ──
+nettsted/utkast/
+nettsted/waitlist.config.js
+nettsted/waitlist.config.local.js
 
 # ── Hemmeligheter ──
 .env
