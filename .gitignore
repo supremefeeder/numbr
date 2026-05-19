@@ -1,11 +1,11 @@
-# ── Alt privat — aldri på GitHub ──
+# ── Privat (rot) — økonomi, pitch, osv. ──
 lokalt/
 .cursor/
 
-# ── Nettside: kladder og lokale secrets ──
-nettsted/utkast/
-nettsted/waitlist.config.js
-nettsted/waitlist.config.local.js
+# ── Nettsted: alt unntatt nettsted/github/ ──
+nettsted/lokalt/
+nettsted/github/waitlist.config.js
+nettsted/github/waitlist.config.local.js
 
 # ── Hemmeligheter ──
 .env
