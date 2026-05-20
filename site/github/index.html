@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Numbr — Ulike numre for ulike liv</title>
-<meta name="description" content="Numbr lar deg opprette og slette virtuelle norske telefonnumre. Privacy-first — ulike numre for ulike liv.">
+<meta name="description" content="Virtuelle norske telefonnumre på mobilen. Opprett og slett når du vil — ring og motta som vanlig.">
 <meta name="theme-color" content="#0e0a12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,12 +36,17 @@
   --fw-medium:  500;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Content column — standard på store skjermer */
+  --content-max: 1000px;
+  --page-pad: clamp(28px, 5.5vw, 80px);
+  --prose-max: 36em;
+  /* Rund scroll-knapp — samme sted på hero og resten av siden */
+  --fab-bottom: 44px;
+  --fab-right: max(var(--page-pad), calc(50vw - var(--content-max) / 2 + var(--page-pad)));
 }
 
-html { scroll-behavior: smooth; }
-
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -58,12 +63,17 @@ body {
   overflow-x: hidden;
 }
 
-/* ── NAV ── */
-nav {
+/* ── NAV (kun topplinje — ikke bruk <nav> andre steder) ── */
+.site-nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
-  padding: 28px 44px;
+  width: 100%;
+  max-width: var(--content-max);
+  padding: 28px var(--page-pad);
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -151,7 +161,11 @@ nav {
 .hero-text {
   position: relative;
   z-index: 2;
-  padding: 0 44px 44px;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-pad) 44px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
@@ -162,16 +176,28 @@ nav {
   font-size: var(--fs-display);
   line-height: 1;
   letter-spacing: -0.035em;
-  margin-bottom: 36px;
+  margin-bottom: 18px;
   opacity: 0;
   animation: up 0.9s 0.15s var(--ease-out) forwards;
 }
 .hero-h1 em { font-style: italic; }
 
+.hero-lead {
+  font-family: var(--f-sans);
+  font-size: clamp(15px, 2.15vw, 19px);
+  font-weight: var(--fw-regular);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: rgba(225, 215, 235, 0.62);
+  max-width: 26em;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: up 0.9s 0.26s var(--ease-out) forwards;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .hero-btn {
@@ -189,33 +215,16 @@ nav {
   cursor: pointer;
   transition: background 0.25s, color 0.25s, gap 0.25s;
   opacity: 0;
-  animation: up 0.9s 0.35s var(--ease-out) forwards;
+  animation: up 0.9s 0.4s var(--ease-out) forwards;
   letter-spacing: -0.01em;
   line-height: 1;
 }
 .hero-btn:hover { background: var(--gold); color: var(--bg); gap: 14px; }
 
-.hero-circle {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: var(--white);
-  border: none;
-  color: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.5s ease;
-  flex-shrink: 0;
-  opacity: 0;
-  animation: up 0.9s 0.5s var(--ease-out) forwards;
-}
-.hero-circle:hover { background: var(--gold-lt); }
-
 .scroll-fab {
   position: fixed;
-  bottom: 36px;
-  right: 36px;
+  bottom: var(--fab-bottom);
+  right: var(--fab-right);
   z-index: 500;
   width: 52px; height: 52px;
   border-radius: 50%;
@@ -226,20 +235,11 @@ nav {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.5s ease, opacity 0.6s ease;
+  transition: background 0.25s ease, transform 0.5s ease;
   box-shadow: 0 4px 32px rgba(0,0,0,0.25);
-  opacity: 0;
-  pointer-events: none;
-  animation: fabPulse 3s ease-in-out infinite;
 }
-.scroll-fab.visible { opacity: 1; pointer-events: auto; }
 .scroll-fab:hover { background: var(--gold-lt); }
-.scroll-fab.up svg { transform: rotate(180deg); transition: transform 0.5s ease; }
-
-@keyframes fabPulse {
-  0%, 100% { box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
-  50%      { box-shadow: 0 4px 32px rgba(196,168,100,0.2); }
-}
+.scroll-fab.up svg { transform: rotate(180deg); }
 
 @keyframes up {
   from { opacity: 0; transform: translateY(14px); }
@@ -283,11 +283,14 @@ nav {
 }
 
 /* ── INTRO ── */
-.intro { padding: 88px 44px; }
+.intro { padding: 88px 0; }
 
 .intro-text {
-  max-width: 1100px;
+  width: 100%;
+  max-width: min(var(--content-max), var(--prose-max));
   margin: 0 auto;
+  padding: 0 var(--page-pad);
+  box-sizing: border-box;
   font-family: var(--f-display);
   font-size: var(--fs-heading);
   font-weight: var(--fw-light);
@@ -296,8 +299,15 @@ nav {
 }
 
 /* ── USE CASES ── */
-.cases { padding: 72px 44px; }
-.cases-inner { max-width: 1100px; margin: 0 auto; }
+.cases { padding: 72px 0; }
+.cases .section-label { margin-bottom: 48px; }
+.cases-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
+  box-sizing: border-box;
+}
 
 .cases-stack {
   display: flex;
@@ -310,9 +320,15 @@ nav {
   gap: 40px;
   align-items: start;
   padding: 36px 0;
-  transition: opacity 0.2s;
 }
-.case-card:hover { opacity: 0.75; }
+
+.case-card h3,
+.case-body,
+.case-tag {
+  transition: color 0.45s var(--ease-out), opacity 0.45s var(--ease-out);
+}
+
+.case-card h3 { opacity: 0.9; }
 
 .case-card-top {
   display: flex;
@@ -333,8 +349,14 @@ nav {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.65;
+  opacity: 0.6;
   display: block;
+}
+
+@media (hover: hover) {
+  .case-card:hover h3 { opacity: 1; }
+  .case-card:hover .case-body { color: rgba(225, 215, 235, 0.72); }
+  .case-card:hover .case-tag { opacity: 1; color: var(--gold-lt); }
 }
 
 .case-body {
@@ -343,11 +365,12 @@ nav {
   line-height: 1.75;
   color: var(--dim);
   padding-top: 4px;
+  max-width: var(--prose-max);
 }
 
 /* ── PRIVACY ── */
 .privacy {
-  padding: 88px 44px;
+  padding: 88px 0;
   position: relative;
   overflow: hidden;
 }
@@ -364,8 +387,11 @@ nav {
 }
 
 .privacy-inner {
-  max-width: 1100px;
+  width: 100%;
+  max-width: var(--content-max);
   margin: 0 auto;
+  padding: 0 var(--page-pad);
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 88px;
@@ -405,23 +431,37 @@ nav {
   opacity: 0.6;
   font-size: 20px;
   flex-shrink: 0;
-  transition: transform 0.32s var(--ease-out), opacity 0.2s;
+  transition: transform 0.55s var(--ease-out), opacity 0.45s var(--ease-out);
   line-height: 1;
 }
 .faq-item.open .faq-icon { transform: rotate(45deg); opacity: 1; }
+
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-out);
+}
+.faq-item.open .faq-panel { grid-template-rows: 1fr; }
 
 .faq-body {
   font-size: var(--fs-body);
   font-weight: var(--fw-light);
   line-height: 1.85;
   color: var(--dim);
-  max-height: 0;
   overflow: hidden;
-  transition: max-height 0.42s var(--ease-out), padding 0.28s;
+  min-height: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.6s var(--ease-out),
+    padding 0.6s var(--ease-out);
 }
 .faq-item.open .faq-body {
-  max-height: 320px;
   padding-bottom: 18px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── WAITLIST ── */
@@ -433,7 +473,7 @@ nav {
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  padding: 60px 44px;
+  padding: 60px var(--page-pad);
 }
 
 .wl-glow {
@@ -532,7 +572,11 @@ footer {
   position: relative;
   z-index: 1;
   background: transparent;
-  padding: 32px 44px;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 32px var(--page-pad);
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -546,42 +590,28 @@ footer {
 }
 .ft-logo .dot { color: var(--gold); }
 
-.ft-links {
-  display: flex;
-  gap: 24px;
-}
-.ft-links a {
-  font-size: var(--fs-micro);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--dim);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.ft-links a:hover { color: var(--white); }
-
 footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
 
 /* ── REVEAL ── */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: translateY(14px);
+  transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
 }
 .reveal.on { opacity: 1; transform: none; }
 
 /* ── MOBILE ── */
 @media (max-width: 700px) {
-  nav { padding: 22px 24px; }
-  .hero-text { padding: 0 24px 36px; }
-  .intro { padding: 64px 24px; }
-  .cases { padding: 56px 24px 0; }
+  .site-nav { padding: 22px var(--page-pad); left: 0; transform: none; width: 100%; }
+  .hero-text { padding: 0 var(--page-pad) 36px; }
+  .intro { padding: 64px 0; }
+  .cases { padding: 56px 0 0; }
   .case-card { grid-template-columns: 1fr; gap: 12px; }
-  .privacy { padding: 64px 24px; }
+  .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
-  .waitlist { padding: 80px 24px; }
-  .scroll-fab { bottom: 24px; right: 24px; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+  .waitlist { padding: 80px var(--page-pad); }
+  .scroll-fab { bottom: 36px; right: var(--page-pad); }
+  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px var(--page-pad); max-width: none; }
 }
 </style>
 </head>
@@ -593,7 +623,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   </svg>
 </button>
 
-<nav>
+<nav class="site-nav" aria-label="Hovedmeny">
   <a class="nav-logo" href="#">numbr</a>
   <button type="button" class="nav-cta" data-scroll="waitlist">Bli med tidlig</button>
 </nav>
@@ -608,16 +638,12 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
     <h1 class="hero-h1">
       Ulike numre<br>for <em>ulike liv.</em>
     </h1>
+    <p class="hero-lead">Virtuelle norske telefonnumre du oppretter og sletter når du vil.</p>
     <div class="hero-actions">
       <button type="button" class="hero-btn" data-scroll="waitlist">
         Bli med tidlig
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button type="button" class="hero-circle" data-scroll="intro" aria-label="Scroll ned">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M2 5L8 11L14 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
@@ -626,7 +652,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
 
 <section class="intro reveal" aria-label="Om Numbr">
   <p class="intro-text">
-    Nummeret ditt er alltid det samme — uansett hvem du snakker med, hva du kjøper og hvem du møter. Det trenger det ikke å være. Med Numbr oppretter du ekstra numre når du vil og sletter dem igjen når du er ferdig.
+    Du er ikke alltid den samme — det trenger telefonnummeret ditt heller ikke å være.
   </p>
 </section>
 
@@ -634,24 +660,23 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   <div class="cases-inner">
     <div class="reveal">
       <div class="section-label">Bruksområder</div>
-      <h2 class="section-h2">Ulike numre<br>for <em>ulike liv.</em></h2>
     </div>
     <div class="cases-stack reveal">
       <article class="case-card">
         <div class="case-card-left">
           <div class="case-card-top">
-            <h3>Burner-nummer</h3>
+            <h3>Engangsnummer</h3>
           </div>
-          <span class="case-tag">Utløper automatisk · Tilkjøp</span>
+          <span class="case-tag">Utløper automatisk</span>
         </div>
-        <p class="case-body">Et tidsbegrenset nummer som sletter seg selv. Opprett det til folk og situasjoner du ikke vil gi privatnummeret ditt til — og glem det. Numbr rydder opp for deg.</p>
+        <p class="case-body">Et tidsbegrenset nummer som sletter seg selv. Opprett det til verifisering eller kjøp og salg på nett.</p>
       </article>
       <article class="case-card">
         <div class="case-card-left">
           <div class="case-card-top">
-            <h3>Rolle-numre</h3>
+            <h3>Faste numre</h3>
           </div>
-          <span class="case-tag">Permanent · Inngår i plan</span>
+          <span class="case-tag">Permanent</span>
         </div>
         <p class="case-body">Jobb, familie, venner — hvert med sitt nummer. Du ser hvem som ringer, og kan skru av et nummer når du ikke vil forstyrres.</p>
       </article>
@@ -677,27 +702,27 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
     <div class="reveal" role="list">
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Hvordan fungerer det i praksis?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Du verifiserer med BankID én gang, oppretter et nummer og gir det et navn. Deretter fungerer det som et vanlig telefonnummer — du kan ringe, motta anrop og SMS. Når du ikke lenger trenger det, sletter du det med ett trykk.</div>
+        <div class="faq-panel"><div class="faq-body">Du verifiserer med BankID én gang, oppretter et nummer og gir det et navn. Deretter fungerer det som et vanlig telefonnummer — du kan ringe, motta anrop og SMS. Når du ikke lenger trenger det, sletter du det med ett trykk.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Hvorfor krever dere BankID?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Norsk ekomlov krever at alle som utsteder telefonnumre kan identifisere brukerne. Vi bruker BankID fordi det er enklest for deg — du slipper å sende kopi av pass eller ID.</div>
+        <div class="faq-panel"><div class="faq-body">Norsk ekomlov krever at alle som utsteder telefonnumre kan identifisere brukerne. Vi bruker BankID fordi det er enklest for deg — du slipper å sende kopi av pass eller ID.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Kan dere koble nummeret til meg?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Ved rettslig kjennelse, ja. BankID-data og nummerdata ligger i to separate systemer med ulik kryptering. Ingen hos oss har tilgang til begge på én gang.</div>
+        <div class="faq-panel"><div class="faq-body">Ved rettslig kjennelse, ja. BankID-data og nummerdata ligger i to separate systemer med ulik kryptering. Ingen hos oss har tilgang til begge på én gang.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Selger dere data?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Nei. Vi tjener penger på abonnementet, ikke på dataen din. Vi har ingen reklamepartnere.</div>
+        <div class="faq-panel"><div class="faq-body">Nei. Vi tjener penger på abonnementet, ikke på dataen din. Vi har ingen reklamepartnere.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Er det ekte norske telefonnumre?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Ja, vanlige norske numre. Den du ringer til vil ikke se at det er et Numbr-nummer.</div>
+        <div class="faq-panel"><div class="faq-body">Ja, vanlige norske numre. Den du ringer til vil ikke se at det er et Numbr-nummer.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Trenger jeg et vanlig mobilabonnement?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-body">Strengt tatt nei. Numbr bruker internett — ikke det tradisjonelle telefon-nettet. Et enkelt dataabonnement er nok. Du trenger ikke taletid eller SMS-pakke fra operatøren din. For mange kan Numbr bety at et billig datakort er alt de trenger.</div>
+        <div class="faq-panel"><div class="faq-body">Strengt tatt nei. Numbr bruker internett — ikke det tradisjonelle telefon-nettet. Et enkelt dataabonnement er nok. Du trenger ikke taletid eller SMS-pakke fra operatøren din. For mange kan Numbr bety at et billig datakort er alt de trenger.</div></div>
       </div>
     </div>
   </div>
@@ -722,11 +747,6 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
 
 <footer>
   <div class="ft-logo">numbr<span class="dot">.</span></div>
-  <nav class="ft-links" aria-label="Bunntekst">
-    <a href="#">Personvern</a>
-    <a href="#">Vilkår</a>
-    <a href="#">Kontakt</a>
-  </nav>
   <p>© 2026 Numbr AS · Oslo</p>
 </footer>
 
@@ -734,7 +754,6 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
 <script>
 (function () {
   const fab = document.getElementById('fab');
-  const hero = document.querySelector('.hero');
   const pageSections = [
     document.querySelector('.hero'),
     document.querySelector('.intro'),
@@ -743,11 +762,47 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
     document.querySelector('.waitlist'),
   ].filter(Boolean);
 
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  let scrollAnimId = null;
+  function smoothScrollTo(targetY) {
+    if (scrollAnimId) cancelAnimationFrame(scrollAnimId);
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    if (Math.abs(distance) < 2) return;
+
+    if (prefersReduced) {
+      window.scrollTo(0, targetY);
+      return;
+    }
+
+    const duration = Math.min(1400, Math.max(750, Math.abs(distance) * 0.85));
+    const t0 = performance.now();
+
+    function step(now) {
+      const p = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, startY + distance * easeInOutCubic(p));
+      if (p < 1) scrollAnimId = requestAnimationFrame(step);
+      else scrollAnimId = null;
+    }
+    scrollAnimId = requestAnimationFrame(step);
+  }
+
+  function scrollToElement(el) {
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY;
+    smoothScrollTo(y);
+  }
+
   function scrollToTarget(target) {
     const el = typeof target === 'string'
       ? (target.startsWith('#') ? document.querySelector(target) : document.getElementById(target) || document.querySelector('.' + target))
       : target;
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    scrollToElement(el);
   }
 
   document.querySelectorAll('[data-scroll]').forEach(btn => {
@@ -757,26 +812,26 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   fab.addEventListener('click', () => {
     const vh = window.innerHeight;
     const next = pageSections.find(s => s.getBoundingClientRect().top > vh * 0.3);
-    if (next) {
-      next.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    if (next) scrollToElement(next);
+    else smoothScrollTo(0);
   });
+
+  function updateFab() {
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
+    fab.classList.toggle('up', atBottom);
+    fab.setAttribute('aria-label', atBottom ? 'Scroll til toppen' : 'Scroll til neste seksjon');
+  }
 
   let scrollTicking = false;
   window.addEventListener('scroll', () => {
     if (scrollTicking) return;
     scrollTicking = true;
     requestAnimationFrame(() => {
-      const heroH = hero.offsetHeight;
-      fab.classList.toggle('visible', window.scrollY > heroH * 0.8);
-      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
-      fab.classList.toggle('up', atBottom);
-      fab.setAttribute('aria-label', atBottom ? 'Scroll til toppen' : 'Scroll til neste seksjon');
+      updateFab();
       scrollTicking = false;
     });
   }, { passive: true });
+  updateFab();
 
   document.querySelectorAll('.faq-q').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -796,7 +851,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   const obs = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('on'), i * 70);
+        setTimeout(() => e.target.classList.add('on'), i * 90);
         obs.unobserve(e.target);
       }
     });
