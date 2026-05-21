@@ -52,6 +52,7 @@ html {
   /* Rund scroll-knapp — samme sted på hero og resten av siden */
   --fab-bottom: 44px;
   --fab-right: max(var(--page-pad), calc(50vw - var(--content-max) / 2 + var(--page-pad)));
+  --hero-bottom: 44px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -173,7 +174,7 @@ body {
   width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 0 var(--page-pad) 44px;
+  padding: 0 var(--page-pad) var(--hero-bottom);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -630,8 +631,26 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
 
 /* ── MOBILE ── */
 @media (max-width: 700px) {
+  :root {
+    --hero-bottom: max(28px, calc(16px + env(safe-area-inset-bottom, 0px)));
+    --fab-bottom: var(--hero-bottom);
+  }
   .site-nav { padding: 22px var(--page-pad); left: 0; transform: none; width: 100%; }
-  .hero-text { padding: 0 var(--page-pad) 36px; }
+  .hero-text { padding: 0 var(--page-pad) var(--hero-bottom); }
+  .hero-lead { margin-bottom: 28px; }
+  .hero-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 52px;
+  }
+  .hero-actions::after {
+    content: '';
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
   .intro { padding: 64px 0; }
   .intro-copy--wide { display: none; }
   .intro-copy--narrow { display: inline; }
@@ -643,7 +662,7 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
   .privacy-lead { font-size: 1rem; }
   .intro-text { font-size: 1.875rem; }
   .waitlist { padding: 80px var(--page-pad); }
-  .scroll-fab { bottom: 36px; right: var(--page-pad); }
+  .scroll-fab { right: var(--page-pad); }
   footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px var(--page-pad); max-width: none; }
 }
 </style>
