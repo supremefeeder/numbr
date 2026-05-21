@@ -53,6 +53,8 @@ html {
   --fab-bottom: 44px;
   --fab-right: max(var(--page-pad), calc(50vw - var(--content-max) / 2 + var(--page-pad)));
   --hero-bottom: 44px;
+  --nav-block: 84px;
+  --section-label-offset: calc(var(--nav-block) + 24px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -296,7 +298,23 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+}
+
+.intro {
   justify-content: center;
+  padding: 88px 0;
+}
+
+.cases, .privacy {
+  justify-content: flex-start;
+  align-items: stretch;
+  padding-top: var(--section-label-offset);
+}
+
+.cases .section-label,
+.privacy .section-label {
+  margin-bottom: 32px;
 }
 
 .waitlist {
@@ -306,8 +324,6 @@ body {
 }
 
 /* ── INTRO ── */
-.intro { padding: 88px 0; }
-
 .intro-text {
   width: 100%;
   max-width: min(var(--content-max), var(--prose-max));
@@ -325,9 +341,8 @@ body {
 
 /* ── USE CASES ── */
 .cases {
-  padding: 72px 0 calc(var(--fab-bottom) + 68px);
+  padding-bottom: calc(var(--fab-bottom) + 68px);
 }
-.cases .section-label { margin-bottom: 40px; }
 .cases-inner {
   width: 100%;
   max-width: var(--content-max);
@@ -394,7 +409,7 @@ body {
 
 /* ── PRIVACY ── */
 .privacy {
-  padding: 88px 0;
+  padding-bottom: 88px;
   position: relative;
   overflow: hidden;
 }
@@ -649,6 +664,8 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
   :root {
     --hero-bottom: max(28px, calc(16px + env(safe-area-inset-bottom, 0px)));
     --fab-bottom: var(--hero-bottom);
+    --nav-block: max(68px, calc(48px + env(safe-area-inset-top, 0px)));
+    --section-label-offset: calc(var(--nav-block) + 16px);
   }
   .site-nav { padding: 22px var(--page-pad); left: 0; transform: none; width: 100%; }
   .hero-text { padding: 0 var(--page-pad) var(--hero-bottom); }
@@ -679,19 +696,22 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
     line-height: 1;
   }
   .intro { padding: 64px 0; }
-  .cases {
-    min-height: auto;
-    justify-content: flex-start;
-    padding: 48px 0 calc(var(--hero-bottom) + 76px);
+  .cases, .privacy {
+    min-height: 100vh;
+    padding-top: var(--section-label-offset);
   }
-  .cases .section-label { margin-bottom: 28px; }
+  .cases {
+    padding-bottom: calc(var(--hero-bottom) + 52px);
+  }
+  .privacy { padding-bottom: 64px; }
+  .cases .section-label,
+  .privacy .section-label { margin-bottom: 24px; }
   .case-card {
     grid-template-columns: 1fr;
     gap: 10px;
     align-items: start;
     padding: 20px 0;
   }
-  .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
   .privacy-h2 { font-size: 2rem; }
   .privacy-lead { font-size: 1rem; }
