@@ -12,6 +12,12 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 :root {
   --bg:      #0e0a12;
   --mid:     #2a1c3e;
@@ -25,11 +31,13 @@
   --f-display: 'Cormorant Garamond', serif;
   --f-sans:    'DM Sans', sans-serif;
 
-  --fs-display: clamp(46px, 11vw, 84px);
-  --fs-heading: clamp(32px, 4vw, 48px);
-  --fs-title:   17px;
-  --fs-body:    14px;
-  --fs-micro:   11px;
+  --fs-display: clamp(2.875rem, 5vw + 1.5rem, 5.25rem);
+  --fs-heading: clamp(2rem, 1.5vw + 1.25rem, 3rem);
+  --fs-title:   1.0625rem;
+  --fs-body:    0.875rem;
+  --fs-micro:   0.6875rem;
+  --fs-privacy: clamp(2.25rem, 2vw + 1.5rem, 3.875rem);
+  --fs-lead:    1rem;
 
   --fw-light:   300;
   --fw-regular: 400;
@@ -61,6 +69,7 @@ body {
   font-size: var(--fs-body);
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── NAV (kun topplinje — ikke bruk <nav> andre steder) ── */
@@ -184,7 +193,7 @@ body {
 
 .hero-lead {
   font-family: var(--f-sans);
-  font-size: clamp(15px, 2.15vw, 19px);
+  font-size: var(--fs-lead);
   font-weight: var(--fw-regular);
   line-height: 1.55;
   letter-spacing: -0.01em;
@@ -295,7 +304,10 @@ body {
   font-weight: var(--fw-light);
   line-height: 1.45;
   letter-spacing: -0.01em;
+  text-wrap: pretty;
 }
+
+.intro-copy--narrow { display: none; }
 
 /* ── USE CASES ── */
 .cases { padding: 72px 0; }
@@ -396,7 +408,7 @@ body {
 }
 
 .privacy-h2 {
-  font-size: clamp(36px, 5vw, 62px);
+  font-size: var(--fs-privacy);
   line-height: 1.15;
   max-width: 400px;
   margin-bottom: 16px;
@@ -404,10 +416,10 @@ body {
 
 .privacy-lead {
   font-family: var(--f-sans);
-  font-size: clamp(14px, 1.8vw, 16px);
+  font-size: var(--fs-lead);
   font-weight: var(--fw-regular);
   line-height: 1.5;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--white);
   max-width: 22em;
 }
@@ -422,16 +434,20 @@ body {
   width: 100%;
   background: none;
   border: none;
-  color: inherit;
+  color: var(--white);
   text-align: left;
-  font: inherit;
+  font-family: var(--f-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  -webkit-appearance: none;
+  appearance: none;
 }
 .faq-q > span:first-child {
-  font-size: var(--fs-body);
+  font-size: inherit;
   font-weight: var(--fw-medium);
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--white);
+  color: inherit;
 }
 
 .faq-icon {
@@ -507,7 +523,7 @@ body {
 
 .wl-inner h2 {
   font-family: var(--f-display);
-  font-size: clamp(36px, 5.5vw, 60px);
+  font-size: var(--fs-privacy);
   font-weight: var(--fw-light);
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -612,10 +628,14 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
   .site-nav { padding: 22px var(--page-pad); left: 0; transform: none; width: 100%; }
   .hero-text { padding: 0 var(--page-pad) 36px; }
   .intro { padding: 64px 0; }
+  .intro-copy--wide { display: none; }
+  .intro-copy--narrow { display: inline; }
   .cases { padding: 56px 0 0; }
   .case-card { grid-template-columns: 1fr; gap: 12px; align-items: start; }
   .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
+  .privacy-h2 { font-size: 2.25rem; }
+  .privacy-lead { font-size: 1rem; }
   .waitlist { padding: 80px var(--page-pad); }
   .scroll-fab { bottom: 36px; right: var(--page-pad); }
   footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px var(--page-pad); max-width: none; }
@@ -659,7 +679,7 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
 
 <section class="intro reveal" aria-label="Om Numbr">
   <p class="intro-text">
-    Du er ikke alltid den samme — det trenger telefonnummeret ditt heller ikke å være.
+    <span class="intro-copy intro-copy--wide">Du er ikke alltid den samme — det trenger telefonnummeret ditt heller ikke å være.</span><span class="intro-copy intro-copy--narrow">Du er ikke alltid den samme — det&nbsp;trenger&nbsp;telefonnummeret ditt heller ikke å være.</span>
   </p>
 </section>
 
@@ -880,7 +900,7 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
       ? 'rgba(196,168,100,0.8)'
       : tone === 'err'
         ? '#ff6b6b'
-        : 'rgba(225,215,235,0.18)';
+        : '';
   }
 
   async function signup() {
