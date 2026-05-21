@@ -311,8 +311,10 @@ body {
 .intro-copy--narrow { display: none; }
 
 /* ── USE CASES ── */
-.cases { padding: 72px 0; }
-.cases .section-label { margin-bottom: 48px; }
+.cases {
+  padding: 72px 0 calc(var(--fab-bottom) + 68px);
+}
+.cases .section-label { margin-bottom: 40px; }
 .cases-inner {
   width: 100%;
   max-width: var(--content-max);
@@ -331,7 +333,7 @@ body {
   grid-template-columns: 200px 1fr;
   gap: 40px;
   align-items: center;
-  padding: 36px 0;
+  padding: 28px 0;
 }
 
 .case-card h3,
@@ -654,8 +656,18 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
   .intro { padding: 64px 0; }
   .intro-copy--wide { display: none; }
   .intro-copy--narrow { display: inline; }
-  .cases { padding: 56px 0 0; }
-  .case-card { grid-template-columns: 1fr; gap: 12px; align-items: start; }
+  .cases {
+    min-height: auto;
+    justify-content: flex-start;
+    padding: 48px 0 calc(var(--hero-bottom) + 76px);
+  }
+  .cases .section-label { margin-bottom: 28px; }
+  .case-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 20px 0;
+  }
   .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
   .privacy-h2 { font-size: 2rem; }
