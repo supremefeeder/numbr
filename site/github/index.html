@@ -55,6 +55,7 @@ html {
   --hero-bottom: 44px;
   --nav-block: 84px;
   --section-label-offset: calc(var(--nav-block) + 24px);
+  --section-bottom-pad: calc(var(--fab-bottom) + 68px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -267,6 +268,15 @@ body {
 .scroll-fab:hover { background: var(--gold-lt); }
 .scroll-fab.up svg { transform: rotate(180deg); }
 
+.hero-scroll {
+  display: none;
+  flex-shrink: 0;
+}
+.scroll-fab--inline {
+  position: static;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+}
+
 @keyframes up {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -307,14 +317,29 @@ body {
 }
 
 .cases, .privacy {
-  justify-content: flex-start;
   align-items: stretch;
   padding-top: var(--section-label-offset);
+  padding-bottom: var(--section-bottom-pad);
 }
 
-.cases .section-label,
-.privacy .section-label {
+.cases-inner,
+.privacy-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-head {
+  flex-shrink: 0;
+}
+
+.section-head .section-label {
   margin-bottom: 32px;
+}
+
+.section-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .waitlist {
@@ -340,9 +365,6 @@ body {
 }
 
 /* ── USE CASES ── */
-.cases {
-  padding-bottom: calc(var(--fab-bottom) + 68px);
-}
 .cases-inner {
   width: 100%;
   max-width: var(--content-max);
@@ -409,9 +431,15 @@ body {
 
 /* ── PRIVACY ── */
 .privacy {
-  padding-bottom: 88px;
   position: relative;
   overflow: hidden;
+}
+
+.privacy .section-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 88px;
+  align-items: start;
 }
 
 .privacy::before {
@@ -431,9 +459,6 @@ body {
   margin: 0 auto;
   padding: 0 var(--page-pad);
   box-sizing: border-box;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 88px;
   position: relative;
   z-index: 1;
 }
@@ -655,6 +680,13 @@ footer {
 }
 .reveal.on { opacity: 1; transform: none; }
 
+/* ── DESKTOP: Bruksområder + Personvern — blokken senkes mot vertikal midt ── */
+@media (min-width: 701px) {
+  .cases, .privacy {
+    padding-top: var(--section-block-offset, var(--section-label-offset));
+  }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 700px) {
   :root {
@@ -662,53 +694,59 @@ footer {
     --fab-bottom: var(--hero-bottom);
     --nav-block: max(68px, calc(48px + env(safe-area-inset-top, 0px)));
     --section-label-offset: calc(var(--nav-block) + 16px);
+    --section-bottom-pad: calc(var(--hero-bottom) + 52px);
   }
   .site-nav { padding: 22px var(--page-pad); left: 0; transform: none; width: 100%; }
+  .hero {
+    height: 100svh;
+    height: 100dvh;
+  }
   .hero-text { padding: 0 var(--page-pad) var(--hero-bottom); }
   .hero-lead { margin-bottom: 28px; }
   .hero-actions {
-    display: grid;
-    grid-template-columns: 1fr 52px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
-    column-gap: 12px;
+    gap: 12px;
   }
-  .hero-actions::after {
-    content: '';
-    width: 52px;
-    height: 52px;
-    grid-column: 2;
-    grid-row: 1;
+  .hero-scroll {
+    display: flex;
+    opacity: 0;
+    animation: up 0.9s 0.4s var(--ease-out) forwards;
   }
   .hero-btn {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: start;
     width: auto;
-    max-width: 100%;
-    min-height: 48px;
-    height: 48px;
+    max-width: calc(100% - 64px);
+    min-height: 52px;
+    height: 52px;
     padding: 0 22px;
     line-height: 1;
   }
+  #fab.is-on-hero {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   .intro { padding: 64px 0; }
   .cases, .privacy {
-    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
     padding-top: var(--section-label-offset);
+    padding-bottom: var(--section-bottom-pad);
   }
-  .cases {
-    padding-bottom: calc(var(--hero-bottom) + 52px);
+  .section-head .section-label { margin-bottom: 24px; }
+  .privacy .section-main {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-  .privacy { padding-bottom: 64px; }
-  .cases .section-label,
-  .privacy .section-label { margin-bottom: 24px; }
   .case-card {
     grid-template-columns: 1fr;
     gap: 10px;
     align-items: start;
     padding: 20px 0;
   }
-  .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
   .intro-text,
   .privacy-h2,
   .wl-inner h2 { font-size: 2.125rem; }
@@ -750,6 +788,11 @@ footer {
           <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
+      <button type="button" class="hero-scroll scroll-fab scroll-fab--inline" id="heroScroll" aria-label="Scroll til neste seksjon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 5L8 11L14 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
@@ -762,9 +805,10 @@ footer {
 
 <section class="cases" aria-label="Bruksområder">
   <div class="cases-inner">
-    <div class="reveal">
+    <header class="section-head reveal">
       <div class="section-label">Bruksområder</div>
-    </div>
+    </header>
+    <div class="section-main">
     <div class="cases-stack reveal">
       <article class="case-card">
         <div class="case-card-left">
@@ -794,13 +838,17 @@ footer {
         <p class="case-body">Dates, folk du møter på fest, noen du ikke er helt sikker på ennå. Gi dem et nummer — og behold kontrollen.</p>
       </article>
     </div>
+    </div>
   </div>
 </section>
 
 <section class="privacy" id="privacy" aria-label="Personvern">
   <div class="privacy-inner">
-    <div class="reveal">
+    <header class="section-head reveal">
       <div class="section-label">Personvern</div>
+    </header>
+    <div class="section-main">
+    <div class="privacy-intro reveal">
       <h2 class="section-h2 privacy-h2">
         <span class="privacy-h2-line">Det vi vet om deg,</span>
         <span class="privacy-h2-line"><em>forblir</em> hos oss.</span>
@@ -833,6 +881,7 @@ footer {
         <div class="faq-panel"><div class="faq-body">Strengt tatt nei. Numbr bruker internett, ikke det tradisjonelle telefonnettverket. Et dataabonnement er nok — du trenger ikke taletid eller SMS-pakke.</div></div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -861,6 +910,8 @@ footer {
 <script>
 (function () {
   const fab = document.getElementById('fab');
+  const heroScroll = document.getElementById('heroScroll');
+  const mobileMq = window.matchMedia('(max-width: 700px)');
   const pageSections = [
     document.querySelector('.hero'),
     document.querySelector('.intro'),
@@ -916,23 +967,85 @@ footer {
     btn.addEventListener('click', () => scrollToTarget(btn.dataset.scroll));
   });
 
-  fab.addEventListener('click', () => {
+  function onScrollFabClick() {
     const vh = window.innerHeight;
     const next = pageSections.find(s => s.getBoundingClientRect().top > vh * 0.3);
     if (next) scrollToElement(next);
     else smoothScrollTo(0);
-  });
+  }
+
+  fab.addEventListener('click', onScrollFabClick);
+  if (heroScroll) heroScroll.addEventListener('click', onScrollFabClick);
+
+  /* Personvern bestemmer høyde — Bruksområder følger (lik etikett-posisjon ved scroll) */
+  function syncCasesToPrivacy() {
+    const privacy = document.querySelector('.privacy');
+    const cases = document.querySelector('.cases');
+    const privacyInner = document.querySelector('.privacy .privacy-inner');
+    const privacyMain = document.querySelector('.privacy .section-main');
+    const casesMain = document.querySelector('.cases .section-main');
+    if (!privacy || !cases || !privacyMain || !casesMain) return;
+
+    casesMain.style.minHeight = '';
+    cases.style.minHeight = '';
+
+    const mainH = Math.ceil(privacyMain.getBoundingClientRect().height);
+    const sectionH = Math.max(window.innerHeight, Math.ceil(privacy.getBoundingClientRect().height));
+
+    document.documentElement.style.setProperty('--section-main-h', mainH + 'px');
+    casesMain.style.minHeight = mainH + 'px';
+    cases.style.minHeight = sectionH + 'px';
+
+    /* Desktop: Personvern måler blokken — begge seksjoner får samme topp-offset */
+    if (!mobileMq.matches && privacyInner) {
+      const vh = window.innerHeight;
+      const blockH = Math.ceil(privacyInner.getBoundingClientRect().height);
+      const bottomPad = parseFloat(getComputedStyle(privacy).paddingBottom) || 0;
+      const navBlock = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-block')) || 84;
+      const minTop = navBlock + 24;
+      const centered = (vh - blockH - bottomPad) / 2;
+      const offset = Math.max(minTop, Math.round(centered));
+      document.documentElement.style.setProperty('--section-block-offset', offset + 'px');
+    } else {
+      document.documentElement.style.removeProperty('--section-block-offset');
+    }
+  }
+
+  const privacySection = document.querySelector('.privacy');
+  const privacyMainEl = document.querySelector('.privacy .section-main');
+  if (typeof ResizeObserver !== 'undefined') {
+    const sectionRo = new ResizeObserver(() => syncCasesToPrivacy());
+    if (privacyMainEl) sectionRo.observe(privacyMainEl);
+    if (privacySection) sectionRo.observe(privacySection);
+  }
+  syncCasesToPrivacy();
+  window.addEventListener('resize', syncCasesToPrivacy, { passive: true });
+  window.addEventListener('load', syncCasesToPrivacy);
 
   function updateFab() {
     const vh = window.innerHeight;
-    const slack = window.innerWidth <= 700 ? 160 : 100;
+    const slack = mobileMq.matches ? 160 : 100;
     const atDocBottom = window.scrollY + vh >= document.documentElement.scrollHeight - slack;
     const lastSection = pageSections[pageSections.length - 1];
     const onLastSection = lastSection
       && lastSection.getBoundingClientRect().top < vh * 0.5;
     const pointUp = atDocBottom || onLastSection;
+    const label = pointUp ? 'Scroll til toppen' : 'Scroll til neste seksjon';
+
     fab.classList.toggle('up', pointUp);
-    fab.setAttribute('aria-label', pointUp ? 'Scroll til toppen' : 'Scroll til neste seksjon');
+    fab.setAttribute('aria-label', label);
+
+    if (heroScroll) {
+      heroScroll.classList.toggle('up', pointUp);
+      heroScroll.setAttribute('aria-label', label);
+    }
+
+    if (mobileMq.matches && pageSections[0]) {
+      const onHero = pageSections[0].getBoundingClientRect().bottom > vh * 0.55;
+      fab.classList.toggle('is-on-hero', onHero);
+    } else {
+      fab.classList.remove('is-on-hero');
+    }
   }
 
   let scrollTicking = false;
@@ -960,6 +1073,9 @@ footer {
         item.classList.add('open');
         btn.setAttribute('aria-expanded', 'true');
       }
+      requestAnimationFrame(() => {
+        requestAnimationFrame(syncCasesToPrivacy);
+      });
     });
   });
 
