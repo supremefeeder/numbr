@@ -320,9 +320,8 @@ body {
   line-height: 1.45;
   letter-spacing: -0.01em;
   text-wrap: pretty;
+  hyphens: none;
 }
-
-.intro-copy--narrow { display: none; }
 
 /* ── USE CASES ── */
 .cases {
@@ -680,8 +679,6 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
     line-height: 1;
   }
   .intro { padding: 64px 0; }
-  .intro-copy--wide { display: none; }
-  .intro-copy--narrow { display: inline; }
   .cases {
     min-height: auto;
     justify-content: flex-start;
@@ -742,7 +739,7 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
 
 <section class="intro reveal" aria-label="Om Numbr">
   <p class="intro-text">
-    <span class="intro-copy intro-copy--wide">Du er ikke alltid den samme — det trenger telefonnummeret ditt heller ikke å være.</span><span class="intro-copy intro-copy--narrow">Du er ikke alltid den samme — det&nbsp;trenger&nbsp;telefonnummeret ditt heller ikke å være.</span>
+    Du er ikke alltid den samme — det trenger telefonnummeret ditt heller ikke å være.
   </p>
 </section>
 
