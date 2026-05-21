@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e0a12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,12 +31,12 @@ html {
   --f-display: 'Cormorant Garamond', serif;
   --f-sans:    'DM Sans', sans-serif;
 
-  --fs-display: clamp(2.875rem, 5vw + 1.5rem, 5.25rem);
-  --fs-heading: clamp(2rem, 1.5vw + 1.25rem, 3rem);
+  --fs-display: clamp(2.5rem, 4vw + 1.25rem, 4.5rem);
+  --fs-heading: clamp(1.75rem, 1.1vw + 1rem, 2.5rem);
   --fs-title:   1.0625rem;
   --fs-body:    0.875rem;
   --fs-micro:   0.6875rem;
-  --fs-privacy: clamp(2.25rem, 2vw + 1.5rem, 3.875rem);
+  --fs-privacy: clamp(1.75rem, 1.1vw + 1rem, 2.5rem);
   --fs-lead:    1rem;
 
   --fw-light:   300;
@@ -639,8 +639,9 @@ footer p { font-size: var(--fs-micro); color: var(--white); }
   .case-card { grid-template-columns: 1fr; gap: 12px; align-items: start; }
   .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
-  .privacy-h2 { font-size: 2.25rem; }
-  .privacy-lead { font-size: 1rem; }
+  .privacy-h2 { font-size: 1.75rem; }
+  .privacy-lead { font-size: 0.9375rem; }
+  .intro-text { font-size: 1.75rem; }
   .waitlist { padding: 80px var(--page-pad); }
   .scroll-fab { bottom: 36px; right: var(--page-pad); }
   footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px var(--page-pad); max-width: none; }
