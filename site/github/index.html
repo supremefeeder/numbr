@@ -923,20 +923,28 @@ footer {
   });
 
   function updateFab() {
-    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
-    fab.classList.toggle('up', atBottom);
-    fab.setAttribute('aria-label', atBottom ? 'Scroll til toppen' : 'Scroll til neste seksjon');
+    const vh = window.innerHeight;
+    const slack = window.innerWidth <= 700 ? 160 : 100;
+    const atDocBottom = window.scrollY + vh >= document.documentElement.scrollHeight - slack;
+    const lastSection = pageSections[pageSections.length - 1];
+    const onLastSection = lastSection
+      && lastSection.getBoundingClientRect().top < vh * 0.5;
+    const pointUp = atDocBottom || onLastSection;
+    fab.classList.toggle('up', pointUp);
+    fab.setAttribute('aria-label', pointUp ? 'Scroll til toppen' : 'Scroll til neste seksjon');
   }
 
   let scrollTicking = false;
-  window.addEventListener('scroll', () => {
+  function onScrollOrResize() {
     if (scrollTicking) return;
     scrollTicking = true;
     requestAnimationFrame(() => {
       updateFab();
       scrollTicking = false;
     });
-  }, { passive: true });
+  }
+  window.addEventListener('scroll', onScrollOrResize, { passive: true });
+  window.addEventListener('resize', onScrollOrResize, { passive: true });
   updateFab();
 
   document.querySelectorAll('.faq-q').forEach(btn => {
