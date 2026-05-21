@@ -18,7 +18,7 @@
   --gold:    #c4a864;
   --gold-lt: #e0c88c;
   --white:   #e1d7eb;
-  --dim:     rgba(225,215,235,0.42);
+  --dim:     var(--white);
   --dimmer:  rgba(225,215,235,0.2);
   --line:    rgba(225,215,235,0.08);
 
@@ -188,7 +188,7 @@ body {
   font-weight: var(--fw-regular);
   line-height: 1.55;
   letter-spacing: -0.01em;
-  color: rgba(225, 215, 235, 0.62);
+  color: var(--white);
   max-width: 26em;
   margin-bottom: 36px;
   opacity: 0;
@@ -252,7 +252,6 @@ body {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.6;
   margin-bottom: 16px;
 }
 
@@ -318,7 +317,7 @@ body {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 40px;
-  align-items: start;
+  align-items: center;
   padding: 36px 0;
 }
 
@@ -328,7 +327,7 @@ body {
   transition: color 0.45s var(--ease-out), opacity 0.45s var(--ease-out);
 }
 
-.case-card h3 { opacity: 0.9; }
+.case-card h3 { opacity: 1; }
 
 .case-card-top {
   display: flex;
@@ -349,23 +348,20 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.6;
   display: block;
 }
 
 @media (hover: hover) {
-  .case-card:hover h3 { opacity: 1; }
-  .case-card:hover .case-body { color: rgba(225, 215, 235, 0.72); }
-  .case-card:hover .case-tag { opacity: 1; color: var(--gold-lt); }
+  .case-card:hover .case-tag { color: var(--gold-lt); }
 }
 
 .case-body {
   font-size: var(--fs-body);
   font-weight: var(--fw-light);
   line-height: 1.75;
-  color: var(--dim);
-  padding-top: 4px;
+  color: var(--white);
   max-width: var(--prose-max);
+  margin: 0;
 }
 
 /* ── PRIVACY ── */
@@ -403,6 +399,17 @@ body {
   font-size: clamp(36px, 5vw, 62px);
   line-height: 1.15;
   max-width: 400px;
+  margin-bottom: 16px;
+}
+
+.privacy-lead {
+  font-family: var(--f-sans);
+  font-size: clamp(14px, 1.8vw, 16px);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  max-width: 22em;
 }
 
 .faq-q {
@@ -419,16 +426,16 @@ body {
   text-align: left;
   font: inherit;
 }
-.faq-q span {
+.faq-q > span:first-child {
   font-size: var(--fs-body);
-  font-weight: var(--fw-regular);
+  font-weight: var(--fw-medium);
   line-height: 1.3;
   letter-spacing: -0.01em;
+  color: var(--white);
 }
 
 .faq-icon {
   color: var(--gold);
-  opacity: 0.6;
   font-size: 20px;
   flex-shrink: 0;
   transition: transform 0.55s var(--ease-out), opacity 0.45s var(--ease-out);
@@ -447,7 +454,7 @@ body {
   font-size: var(--fs-body);
   font-weight: var(--fw-light);
   line-height: 1.85;
-  color: var(--dim);
+  color: var(--white);
   overflow: hidden;
   min-height: 0;
   padding-bottom: 0;
@@ -532,7 +539,7 @@ body {
   outline: none;
   min-width: 0;
 }
-.wl-input::placeholder { color: rgba(225,215,235,0.18); }
+.wl-input::placeholder { color: rgba(225,215,235,0.45); }
 
 .wl-btn {
   background: var(--gold);
@@ -564,7 +571,7 @@ body {
 .wl-note {
   font-size: var(--fs-micro);
   font-weight: var(--fw-light);
-  color: rgba(225,215,235,0.18);
+  color: var(--white);
   letter-spacing: 0.04em;
 }
 
@@ -590,7 +597,7 @@ footer {
 }
 .ft-logo .dot { color: var(--gold); }
 
-footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
+footer p { font-size: var(--fs-micro); color: var(--white); }
 
 /* ── REVEAL ── */
 .reveal {
@@ -606,7 +613,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   .hero-text { padding: 0 var(--page-pad) 36px; }
   .intro { padding: 64px 0; }
   .cases { padding: 56px 0 0; }
-  .case-card { grid-template-columns: 1fr; gap: 12px; }
+  .case-card { grid-template-columns: 1fr; gap: 12px; align-items: start; }
   .privacy { padding: 64px 0; }
   .privacy-inner { grid-template-columns: 1fr; gap: 40px; }
   .waitlist { padding: 80px var(--page-pad); }
@@ -638,7 +645,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
     <h1 class="hero-h1">
       Ulike numre<br>for <em>ulike liv.</em>
     </h1>
-    <p class="hero-lead">Virtuelle norske telefonnumre du oppretter og sletter når du vil.</p>
+    <p class="hero-lead">Telefoni på dine vilkår</p>
     <div class="hero-actions">
       <button type="button" class="hero-btn" data-scroll="waitlist">
         Bli med tidlig
@@ -669,25 +676,25 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
           </div>
           <span class="case-tag">Utløper automatisk</span>
         </div>
-        <p class="case-body">Et tidsbegrenset nummer som sletter seg selv. Opprett det til verifisering eller kjøp og salg på nett.</p>
+        <p class="case-body">Et tidsbegrenset nummer som sletter seg selv. Til verifisering, kjøp og salg — eller hvem som helst du ikke vil gi privatnummeret ditt til.</p>
       </article>
       <article class="case-card">
         <div class="case-card-left">
           <div class="case-card-top">
-            <h3>Faste numre</h3>
+            <h3>Jobb, familie, venner</h3>
           </div>
-          <span class="case-tag">Permanent</span>
+          <span class="case-tag">Ett nummer per relasjon</span>
         </div>
-        <p class="case-body">Jobb, familie, venner — hvert med sitt nummer. Du ser hvem som ringer, og kan skru av et nummer når du ikke vil forstyrres.</p>
+        <p class="case-body">Hvert med sitt nummer. Du ser hvem som ringer og kan skru av når du ikke vil forstyrres.</p>
       </article>
       <article class="case-card">
         <div class="case-card-left">
           <div class="case-card-top">
             <h3>Nye bekjentskaper</h3>
           </div>
-          <span class="case-tag">Midlertidig · Tilkjøp</span>
+          <span class="case-tag">Ta det tilbake når du vil</span>
         </div>
-        <p class="case-body">Nye bekjentskaper, dates, folk du møter på fest. Gi dem et nummer som er ditt — men som du kan ta tilbake igjen.</p>
+        <p class="case-body">Dates, folk du møter på fest, noen du ikke er helt sikker på ennå. Gi dem et nummer — og behold kontrollen.</p>
       </article>
     </div>
   </div>
@@ -697,20 +704,21 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   <div class="privacy-inner">
     <div class="reveal">
       <div class="section-label">Personvern</div>
-      <h2 class="section-h2 privacy-h2"><em>Det vi vet om deg,<br>forblir hos oss.</em></h2>
+      <h2 class="section-h2 privacy-h2">Det vi vet om deg,<br><em>forblir</em> hos oss.</h2>
+      <p class="privacy-lead">Ingen reklame. Ingen datadeling. Aldri.</p>
     </div>
     <div class="reveal" role="list">
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Hvordan fungerer det i praksis?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-panel"><div class="faq-body">Du verifiserer med BankID én gang, oppretter et nummer og gir det et navn. Deretter fungerer det som et vanlig telefonnummer — du kan ringe, motta anrop og SMS. Når du ikke lenger trenger det, sletter du det med ett trykk.</div></div>
+        <div class="faq-panel"><div class="faq-body">Du verifiserer med BankID én gang. Deretter kan du opprette numre når du trenger dem — de fungerer som vanlige telefonnumre. Ring, motta anrop og SMS. Slett dem når du er ferdig.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Hvorfor krever dere BankID?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-panel"><div class="faq-body">Norsk ekomlov krever at alle som utsteder telefonnumre kan identifisere brukerne. Vi bruker BankID fordi det er enklest for deg — du slipper å sende kopi av pass eller ID.</div></div>
+        <div class="faq-panel"><div class="faq-body">Norsk ekomlov krever at alle som utsteder telefonnumre kan identifisere brukerne. BankID er den raskeste måten å gjøre det på — du slipper å sende kopi av pass eller ID.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Kan dere koble nummeret til meg?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-panel"><div class="faq-body">Ved rettslig kjennelse, ja. BankID-data og nummerdata ligger i to separate systemer med ulik kryptering. Ingen hos oss har tilgang til begge på én gang.</div></div>
+        <div class="faq-panel"><div class="faq-body">Ja, ved rettslig kjennelse. BankID-data og nummerdata ligger i to separate systemer med ulik kryptering. Ingen hos oss har tilgang til begge på én gang.</div></div>
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Selger dere data?</span><span class="faq-icon" aria-hidden="true">+</span></button>
@@ -722,7 +730,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
       </div>
       <div class="faq-item" role="listitem">
         <button type="button" class="faq-q" aria-expanded="false"><span>Trenger jeg et vanlig mobilabonnement?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-panel"><div class="faq-body">Strengt tatt nei. Numbr bruker internett — ikke det tradisjonelle telefon-nettet. Et enkelt dataabonnement er nok. Du trenger ikke taletid eller SMS-pakke fra operatøren din. For mange kan Numbr bety at et billig datakort er alt de trenger.</div></div>
+        <div class="faq-panel"><div class="faq-body">Strengt tatt nei. Numbr bruker internett, ikke det tradisjonelle telefonnettverket. Et dataabonnement er nok — du trenger ikke taletid eller SMS-pakke.</div></div>
       </div>
     </div>
   </div>
@@ -732,7 +740,7 @@ footer p { font-size: var(--fs-micro); color: rgba(225,215,235,0.15); }
   <div class="wl-glow" aria-hidden="true"></div>
   <div class="wl-glow2" aria-hidden="true"></div>
   <div class="wl-inner reveal">
-    <h2>Vi er ikke klare<br>ennå. Men du<br>kan <em>være det.</em></h2>
+    <h2>Få beskjed når vi er klare.</h2>
     <form class="wl-form" id="wlForm" novalidate>
       <label class="wl-honeypot" aria-hidden="true">
         Ikke fyll ut
