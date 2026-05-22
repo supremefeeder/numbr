@@ -47,9 +47,11 @@ jobs:
           mkdir -p _site
           cp site/github/index.html _site/
           cp waitlist.config.js _site/
-          if [ -f site/github/CNAME ]; then
-            cp site/github/CNAME _site/
-          fi
+          for f in robots.txt sitemap.xml CNAME; do
+            if [ -f "site/github/$f" ]; then
+              cp "site/github/$f" _site/
+            fi
+          done
           echo "Deploying only:"
           ls -la _site/
 
