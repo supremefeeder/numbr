@@ -2,6 +2,12 @@
 
 Privacy-first virtuelle norske telefonnumre.
 
-**Site:** [`site/github/index.html`](site/github/index.html) · Live: https://supremefeeder.github.io/numbr/
+**Live-side:** [`site/public/index.html`](site/public/index.html) · https://numbr.no
 
-`site/github/` synces to GitHub. `private/` and `site/workspace/` stay local only.
+| Mappe | Hva |
+|-------|-----|
+| `site/public/` | Publiseres til GitHub → numbr.no |
+| `site/local/` | Nettside-arbeid lokalt (aldri git) |
+| `admin/` | Firma og admin (aldri git) |
+
+Se `.cursor/rules/numbr-mapper.mdc` for full struktur.

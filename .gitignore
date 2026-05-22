@@ -1,11 +1,11 @@
-# ── Private (root) — business files, not the website ──
-private/
+# ── Admin — firma/admin, aldri nettside, aldri git ──
+admin/
 .cursor/
 
-# ── Site: everything except site/github/ ──
-site/workspace/
-site/github/waitlist.config.js
-site/github/waitlist.config.local.js
+# ── Site: kun site/public/ synkes ──
+site/local/
+site/public/waitlist.config.js
+site/public/waitlist.config.local.js
 
 # ── Secrets ──
 .env

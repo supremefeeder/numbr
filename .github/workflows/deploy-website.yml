@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'site/github/**'
+      - 'site/public/**'
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:
 
@@ -45,11 +45,11 @@ jobs:
       - name: Prepare public site bundle
         run: |
           mkdir -p _site
-          cp site/github/index.html _site/
+          cp site/public/index.html _site/
           cp waitlist.config.js _site/
           for f in robots.txt sitemap.xml CNAME; do
-            if [ -f "site/github/$f" ]; then
-              cp "site/github/$f" _site/
+            if [ -f "site/public/$f" ]; then
+              cp "site/public/$f" _site/
             fi
           done
           echo "Deploying only:"
