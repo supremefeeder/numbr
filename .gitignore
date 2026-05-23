@@ -1,5 +1,9 @@
 # ── Admin — firma/admin, aldri nettside, aldri git ──
 admin/
+
+# ── App — produkt/demo, eget repo senere, aldri i numbr-repo ──
+app/
+
 .cursor/
 
 # ── Site: kun site/public/ synkes ──
