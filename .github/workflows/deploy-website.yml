@@ -45,13 +45,8 @@ jobs:
       - name: Prepare public site bundle
         run: |
           mkdir -p _site
-          cp site/public/index.html _site/
+          cp -R site/public/. _site/
           cp waitlist.config.js _site/
-          for f in robots.txt sitemap.xml CNAME; do
-            if [ -f "site/public/$f" ]; then
-              cp "site/public/$f" _site/
-            fi
-          done
           echo "Deploying only:"
           ls -la _site/
 
