@@ -993,7 +993,6 @@ footer {
   <div class="ft-logo">numbr</div>
 </footer>
 
-<script src="waitlist.config.js"></script>
 <script>
 (function () {
   const fab = document.getElementById('fab');
@@ -1177,12 +1176,9 @@ footer {
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const waitlistCfg = window.NUMBR_WAITLIST || {};
   const wlForm = document.getElementById('wlForm');
   const wlInput = document.getElementById('wlEmail');
-  const wlBtn = document.getElementById('wlBtn');
   const wlMsg = document.getElementById('wlMsg');
-  const wlBtnLabel = wlBtn.textContent;
 
   function setWlMessage(text, tone) {
     wlMsg.textContent = text;
@@ -1193,55 +1189,13 @@ footer {
         : '';
   }
 
-  async function signup() {
+  function signup() {
     const value = wlInput.value.trim();
     if (!emailPattern.test(value)) {
       setWlMessage('Skriv inn en gyldig e-postadresse.', 'err');
       return;
     }
-
-    if (!waitlistCfg.enabled || !waitlistCfg.endpoint) {
-      setWlMessage('Ventelisten er ikke aktivert ennå. Prøv igjen om litt.', 'err');
-      return;
-    }
-
-    wlBtn.disabled = true;
-    wlBtn.textContent = 'Sender …';
-    setWlMessage('Sender …', 'neutral');
-
-    const payload = new FormData(wlForm);
-    payload.set('email', value);
-    payload.set('_subject', 'Numbr venteliste');
-
-    const accessKey = waitlistCfg.accessKey
-      || (waitlistCfg.endpoint && waitlistCfg.endpoint.split('/f/')[1]);
-    if (accessKey) payload.set('access_key', accessKey);
-
-    try {
-      const res = await fetch(waitlistCfg.endpoint, {
-        method: 'POST',
-        body: payload,
-        headers: { Accept: 'application/json' },
-      });
-
-      if (res.ok) {
-        setWlMessage('✓ Du er på listen. Vi gir deg beskjed ved lansering.', 'ok');
-        wlForm.reset();
-        return;
-      }
-
-      if (res.status === 429) {
-        setWlMessage('For mange forsøk. Prøv igjen om en stund.', 'err');
-        return;
-      }
-
-      setWlMessage('Noe gikk galt. Prøv igjen om litt.', 'err');
-    } catch {
-      setWlMessage('Kunne ikke koble til. Sjekk nettet og prøv igjen.', 'err');
-    } finally {
-      wlBtn.disabled = false;
-      wlBtn.textContent = wlBtnLabel;
-    }
+    window.location.href = 'tilmelding-lukket.html';
   }
 
   wlForm.addEventListener('submit', e => {
